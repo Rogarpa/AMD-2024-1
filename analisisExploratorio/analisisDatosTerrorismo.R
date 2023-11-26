@@ -19,7 +19,7 @@ selected_data <- data[, 1:34]
 info_table <- data.frame(
   Columna = names(selected_data),
   Tipo = sapply(selected_data, get_attribute_type),
-  Valores_Permitidos = sapply(selected_data, function(x) {
+  Subtipo = sapply(selected_data, function(x) {
     if (is.numeric(x)) {
       if (all(!is.na(x) & x %% 1 == 0))  {
         return("Discreto")
