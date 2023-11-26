@@ -4,11 +4,11 @@ selected_data <- data[, 1:34]
 # Función para obtener el tipo de atributo
 get_attribute_type <- function(column) {
   if (is.factor(column)) {
-    return("Nominal")
+    return("Cualitativo")
   } else if (is.numeric(column)) {
-    return("Numérico")
+    return("Cuantitativo")
   } else {
-    return("Nominal")
+    return("Cualitativo")
   }
 }
 
@@ -19,6 +19,19 @@ selected_data <- data[, 1:34]
 info_table <- data.frame(
   Columna = names(selected_data),
   Tipo = sapply(selected_data, get_attribute_type),
+  Valores_Permitidos = sapply(selected_data, function(x) {
+    if (is.numeric(x)) {
+      if (all(!is.na(x) & x %% 1 == 0))  {
+        return("Discreto")
+      } else {
+        return("Continuo")
+      }
+    } else if (is.character(x)) {
+      return("Nominal")
+    } else {
+      return("Otro")
+    }
+  }),
   Porcentaje_Perdidos = sapply(selected_data, function(x) {
     if (length(x) > 0) {
       # Convertir cadenas vacías "" a NA
@@ -48,10 +61,9 @@ info_table <- data.frame(
 )
 
 info_table$Distribucion <- rep(NA, nrow(info_table))
-info_table$Niveles <- rep(NA, nrow(info_table))
-info_table$Frecuencia <- rep(NA, nrow(info_table))
+info_table$NivesYFrecuencia <- rep(NA, nrow(info_table))
 info_table$Valores_Atipicos <- rep(NA, nrow(info_table))
-                 
+
 #Funcion para encontrar valores atípicos
 has_outliers_iqr <- function(vector) {
   q <- quantile(vector, c(0.25, 0.75), na.rm = TRUE)
