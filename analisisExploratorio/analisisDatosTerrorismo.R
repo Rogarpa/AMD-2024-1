@@ -47,8 +47,11 @@ info_table <- data.frame(
   Desviacion_Estandar = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, sd(x, na.rm = TRUE), NA))
 )
 
+info_table$Distribucion <- rep(NA, nrow(info_table))
+info_table$Niveles <- rep(NA, nrow(info_table))
+info_table$Frecuencia <- rep(NA, nrow(info_table))
 info_table$Valores_Atipicos <- rep(NA, nrow(info_table))
-
+                 
 #Funcion para encontrar valores atípicos
 has_outliers_iqr <- function(vector) {
   q <- quantile(vector, c(0.25, 0.75), na.rm = TRUE)
