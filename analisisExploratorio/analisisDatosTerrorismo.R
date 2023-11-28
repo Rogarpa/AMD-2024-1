@@ -54,7 +54,7 @@ info_table <- data.frame(
       return("Otro")
     }
   }),
-  Valor_Min = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, min(x, na.rm = TRUE), NA)),
+  Valor_Min = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, min(x[x >= 0], na.rm = TRUE), NA)),
   Valor_Max = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, max(x, na.rm = TRUE), NA)),
   Media = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, mean(x, na.rm = TRUE), NA)),
   Desviacion_Estandar = sapply(selected_data, function(x) ifelse(length(na.omit(x)) > 0, sd(x, na.rm = TRUE), NA))
@@ -75,7 +75,7 @@ has_outliers_iqr <- function(vector) {
 
 for (i in 1:nrow(info_table)) {
   # Verificar si la columna es numérica
-  if (info_table$Tipo[i] == "Numérico") {
+  if (info_table$Tipo[i] == "Cuantitativo") {
     # Agregar valores atípicos usando has_outliers_iqr
     info_table$Valores_Atipicos[i] <- has_outliers_iqr(selected_data[[info_table$Columna[i]]])
   }
