@@ -70,15 +70,20 @@ analisis_exploratorio <- function(numero_columna, data, output_file_path) {
     # Valores atipicos
     valores_atipicos <- columna_sin_na[columna_sin_na > limite_superior | columna_sin_na < limite_inferior]
     valores_atipicos <- unique(valores_atipicos)
-    write_to_file(output_file_path, paste("Valores atipicos:", valores_atipicos, "\n"))
+    write_to_file(output_file_path, paste("Valores atipicos:\n"))
+    write.table(valores_atipicos, file = output_file_path, append = TRUE, col.names = FALSE, row.names = FALSE)
   
   } else {
-    # Niveles
+    # Niveles y Frecuencia
     niveles <- levels(as.factor(columna_sin_na))
-    write_to_file(output_file_path, paste("Niveles de la variable categorica: ", niveles, "\n"))
-    # Frecuencia
     frecuencia <- table(columna_sin_na)
-    write_to_file(output_file_path, paste("Frecuencia: ",toString(frecuencia), "\n"))
+    
+    # Crear un data.frame con niveles y frecuencias
+    df_niveles_frecuencia <- data.frame(Niveles = niveles, Frecuencia = as.vector(frecuencia))
+    
+    # Imprimir y escribir en el archivo
+    write_to_file(output_file_path, cat("Niveles de la variable categórica y su frecuencia:\n"))
+    write.table(df_niveles_frecuencia, file = output_file_path, append = TRUE, row.names = FALSE, col.names = FALSE)
   }
   
   write_to_file(output_file_path, paste("############################################################\n"))
