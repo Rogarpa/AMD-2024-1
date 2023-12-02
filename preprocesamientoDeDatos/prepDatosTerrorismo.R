@@ -7,8 +7,8 @@ data = read.csv(file = "../code/R/proyecto/src/globalterrorismdb_0718dist.csv", 
 seleccion_de_atributos <- data[, c(
   "eventid", "iyear", "imonth", "iday",
   "country", "country_txt", "region", "region_txt", "provstate", "city", "latitude", "longitude",
-  "specificity", "vicinity", "attacktype1", "attacktype1_txt", "targtype1", "targtype1_txt",
-  "extended", "suicide"
+  "specificity", "vicinity", "attacktype1", "attacktype1_txt", "attacktype2", "attacktype2_txt",
+  "attacktype3", "attacktype3_txt", "extended", "success", "suicide"
 )]
 
 ####### VALORES PERDIDOS #######
@@ -39,34 +39,46 @@ seleccion_de_atributos$longitude[is.na(seleccion_de_atributos$longitude)] <- med
 # Reemplazar los valores NA en la columna 'specificity' con 0
 seleccion_de_atributos$specificity[is.na(seleccion_de_atributos$specificity)] <- 0
 
-# Reemplazar los valores vacíos y cadenas vacías con "Desconocido" en las columnas "provstate" y "city"
+# Reemplazar NA en  por la moda
+moda_attacktype2 <- as.numeric(names(sort(table(seleccion_de_atributos$attacktype2), decreasing = TRUE)[1]))
+seleccion_de_atributos$attacktype2[is.na(seleccion_de_atributos$attacktype2)] <- moda_attacktype2
+moda_attacktype3 <- as.numeric(names(sort(table(seleccion_de_atributos$attacktype3), decreasing = TRUE)[1]))
+seleccion_de_atributos$attacktype3[is.na(seleccion_de_atributos$attacktype3)] <- moda_attacktype3
+
+# Reemplazar las cadenas vacías con a en las columnas "provstate", "city", "attacktype2" y "attacktype3"
 seleccion_de_atributos$provstate[seleccion_de_atributos$provstate == ""] <- "Desconocido"
 seleccion_de_atributos$city[seleccion_de_atributos$city == ""] <- "Desconocido"
+seleccion_de_atributos$attacktype2_txt[seleccion_de_atributos$attacktype2_txt == ""] <- "Armed Assault"
+seleccion_de_atributos$attacktype3_txt[seleccion_de_atributos$attacktype3_txt == ""] <- "Facility/Infrastructure Attack"
 
 ####### VALORES ATÍPICOS #######
 
 par(mfrow = c(4, 4), mar = c(2, 2, 2, 2))
-boxplot(seleccion_de_atributos$iyear, ylab = "iyear")
-boxplot(seleccion_de_atributos$imonth, ylab = "imonth")
-boxplot(seleccion_de_atributos$iday, ylab = "iday")
 boxplot(seleccion_de_atributos$country, ylab = "country")
-boxplot(seleccion_de_atributos$region, ylab = "region")
 boxplot(seleccion_de_atributos$latitude, ylab = "latitude")
 boxplot(seleccion_de_atributos$longitude, ylab = "longitude")
 boxplot(seleccion_de_atributos$specificity, ylab = "specificity")
-boxplot(seleccion_de_atributos$vicinity, ylab = "vicinity")
 boxplot(seleccion_de_atributos$attacktype1, ylab = "attacktype1")
-boxplot(seleccion_de_atributos$targtype1, ylab = "targtype1")
-boxplot(seleccion_de_atributos$extended, ylab = "extended")
-boxplot(seleccion_de_atributos$suicide, ylab = "suicide")
+boxplot(seleccion_de_atributos$attacktype2, ylab = "attacktype2")
+boxplot(seleccion_de_atributos$attacktype3, ylab = "attacktype3")
+
 
 # Extract potential outliers based on IQR criterion
-outliers <- boxplot.stats(seleccion_de_atributos$targtype1)$out
-outliers <- boxplot.stats(seleccion_de_atributos$longitude)$out
+outliers_country <- boxplot.stats(seleccion_de_atributos$country)$out
+outliers_latitude <- boxplot.stats(seleccion_de_atributos$latitude)$out
+outliers_longitude <- boxplot.stats(seleccion_de_atributos$longitude)$out
+outliers_specificity <- boxplot.stats(seleccion_de_atributos$specificity)$out
+outliers_attacktype1 <- boxplot.stats(seleccion_de_atributos$attacktype1)$out
+outliers_attacktype2 <- boxplot.stats(seleccion_de_atributos$attacktype2)$out
+outliers_attacktype3 <- boxplot.stats(seleccion_de_atributos$attacktype3)$out
 
 # Identify row numbers corresponding to outliers
-outlier_indices <- which(seleccion_de_atributos$targtype1 %in% outliers)
-outlier_indices <- which(seleccion_de_atributos$longitude %in% outliers)
+outlier_indices_country <- which(seleccion_de_atributos$country %in% outliers_country)
+outlier_indices_latitude <- which(seleccion_de_atributos$longitude %in% outliers_latitude)
+outlier_indices_longitude <- which(seleccion_de_atributos$longitude %in% outliers_longitude)
+outlier_indices_attacktype1 <- which(seleccion_de_atributos$longitude %in% outliers_attacktype1)
 
 # Print rows corresponding to outliers
-seleccion_de_atributos[outlier_indices, ]
+seleccion_de_atributos[outlier_indices_country, ]
+seleccion_de_atributos[outlier_indices_latitude, ]
+seleccion_de_atributos[outlier_indices_attacktype1, ]
