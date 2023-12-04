@@ -9,6 +9,16 @@ data <- read.csv("/home/carlows/Descargas/globalterrorismdb_0718dist.csv")
 # Seleccionar atributos relevantes
 selected_data <- data %>% select(individual, nkill, nwound, weaptype1_txt, attacktype1_txt, targtype1_txt, gname, country_txt)
 
+# Definir limites de los valores
+function(x) {
+  Q1 <- quantile(x, 0.25, na.rm = TRUE)
+  Q3 <- quantile(x, 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+  lower_bound <- Q1 - 1.5 * IQR
+  upper_bound <- Q3 + 1.5 * IQR
+  return(c(lower = lower_bound, upper = upper_bound))
+}
+
 # Definir funcion para eliminar o limitar valores atipicos
 limit_outliers <- function(x) {
   bounds <- calculate_bounds(x)
