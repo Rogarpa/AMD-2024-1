@@ -63,6 +63,8 @@ selected_data <- bind_cols(selected_data %>% select(-nkill, -nwound), normalized
 # Discretizacion de nkill (aplicada despues de la normalizacion)
 selected_data$nkill_discretizado <- cut(selected_data$nkill, breaks=c(-Inf, 0, 10, 50, Inf), labels=c("Muy bajo", "Bajo", "Medio", "Alto"))
 
+# Cambio de Character a factor
+selected_data[sapply(selected_data, is.character)] <- lapply(selected_data[sapply(selected_data, is.character)], factor)
 
 # Guardar los datos procesados
 data$nkill <- selected_data$nkill
