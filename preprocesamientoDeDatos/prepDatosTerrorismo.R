@@ -162,17 +162,17 @@ ggplot(data, aes(x = corp1)) +
        y = "Frecuencia")
 
 # Identificar categorías poco frecuentes
-umbral_frecuencia <- 5  # Puedes ajustar este umbral según tus necesidades
-categorias_poco_frecuentes <- tabla_frecuencia %>%
-  filter(frecuencia < umbral_frecuencia) %>%
-  pull(corp1)
+#umbral_frecuencia <- 5  # Puedes ajustar este umbral según tus necesidades
+#categorias_poco_frecuentes <- tabla_frecuencia %>%
+ # filter(frecuencia < umbral_frecuencia) %>%
+  #pull(corp1)
 
 # Imprimir categorías poco frecuentes
-if (length(categorias_poco_frecuentes) > 0) {
-  cat("Categorías poco frecuentes:", paste(categorias_poco_frecuentes, collapse = ", "), "\n")
-} else {
-  cat("No hay categorías poco frecuentes.\n")
-}
+#if (length(categorias_poco_frecuentes) > 0) {
+ # cat("Categorías poco frecuentes:", paste(categorias_poco_frecuentes, collapse = ", "), "\n")
+#} else {
+ # cat("No hay categorías poco frecuentes.\n")
+#}
 
 
 #tabla de frecuencias para corp1
@@ -205,10 +205,10 @@ data <- data %>%
   mutate(variable_texto_agrupada = ifelse(target1 %in% categorias_poco_frecuentes, "Otras", target1))
 
 #hacemos una tabla con el conteo de las categorias de natlty1
-tabla_frecuencia <- table(data_filtrada$natlty1)
+tabla_frecuencia <- table(data$natlty1)
 print(tabla_frecuencia)
 
-table(data_filtrada$natlty1, useNA = "ifany")
+table(data$natlty1, useNA = "ifany")
 
 # Calcular la media de la variable cuantitativa
 media_natlty1 <- mean(data$natlty1, na.rm = TRUE)
@@ -417,3 +417,4 @@ data$guncertain2 <- NULL
 #eliminamos guncertain3 pues es imposible imputar datos
 
 data$guncertain3 <- NULL
+summary(data)
