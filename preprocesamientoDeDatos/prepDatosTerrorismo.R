@@ -1,5 +1,4 @@
 library(ggplot2)
-
 data = read.csv(file = "../code/R/proyecto/src/globalterrorismdb_0718dist.csv", sep=",", header = T, stringsAsFactors = F)
 
 ##### SELECCION DE ATRIBUTOS #####
