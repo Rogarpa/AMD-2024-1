@@ -1,4 +1,4 @@
-install.packages("caret")
+#install.packages("caret")
 
 library(dplyr)
 library(caret)
@@ -65,11 +65,13 @@ selected_data$nkill_discretizado <- cut(selected_data$nkill, breaks=c(-Inf, 0, 1
 
 
 # Guardar los datos procesados
-write.csv(selected_data, "datos_procesados.csv", row.names = FALSE)
+data$nkill <- selected_data$nkill
+data$nwound <- selected_data$nwound
+data$individual <- selected_data$individual
+data$weaptype1_txt <- selected_data$weaptype1_txt 
+data$attacktype1_txt <- selected_data$attacktype1_txt
+data$targtype1_txt <- selected_data$ targtype1_txt
+data$gname <- selected_data$gname
+data$country_txt <- selected_data$country_txt
 
-
-
-
-
-
-
+write.csv(data, "archivo.csv", row.names = FALSE)
