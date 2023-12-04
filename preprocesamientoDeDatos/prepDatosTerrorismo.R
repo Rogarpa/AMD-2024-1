@@ -155,11 +155,11 @@ tabla_frecuencia <- data %>%
 print(tabla_frecuencia)
 
 # Visualizar la distribución con un gráfico de barras
-ggplot(data, aes(x = corp1)) +
-  geom_bar() +
-  labs(title = "Distribución de la Variable Categórica",
-       x = "Categoría",
-       y = "Frecuencia")
+#ggplot(data, aes(x = corp1)) +
+ # geom_bar() +
+  #labs(title = "Distribución de la Variable Categórica",
+   #    x = "Categoría",
+    #   y = "Frecuencia")
 
 # Identificar categorías poco frecuentes
 #umbral_frecuencia <- 5  # Puedes ajustar este umbral según tus necesidades
@@ -418,3 +418,91 @@ data$guncertain2 <- NULL
 
 data$guncertain3 <- NULL
 summary(data)
+
+
+
+
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$corp1)
+
+# Convierte a factor con niveles manuales
+data$corp1 <- factor(data$corp1 , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$corp1)
+
+# Suponiendo que tu dataframe se llama "data"
+data <- data %>%
+  mutate(corp1 = ifelse(corp1 == 1, 924, corp1))
+
+# Suponiendo que tu dataframe se llama "data"
+data$corp1 <- ifelse(is.na(data$corp1), 936, data$corp1)
+
+
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$corp1)
+
+# Convierte a factor con niveles manuales
+data$corp1 <- factor(data$corp1 , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$corp1)
+
+
+
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$targsubtype1_txt)
+
+# Convierte a factor con niveles manuales
+data$targsubtype1_txt <- factor(data$targsubtype1_txt , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$targsubtype1_txt)
+
+
+# cambiamos las cadenas vacias a la categoria Unnamed Civilian/Unspecified
+data <- data %>%
+  mutate(targsubtype1_txt = ifelse(targsubtype1_txt == 13, 45, targsubtype1_txt))
+#regresamos a facotor targetsubtype1_txt
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$targsubtype1_txt)
+
+# Convierte a factor con niveles manuales
+data$targsubtype1_txt <- factor(data$targsubtype1_txt , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$targsubtype1_txt)
+
+
+
+
+
+
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$target1)
+
+# Convierte a factor con niveles manuales
+data$target1 <- factor(data$target1 , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$target1)
+
+
+
+# Suponiendo que tu dataframe se llama "data"
+data <- data %>%
+  mutate(target1 = ifelse(is.na(target1), "Civilians", target1))
+
+
+# Obtiene los niveles únicos en el orden en que aparecen los datos
+unique_levels <- unique(data$target1)
+
+# Convierte a factor con niveles manuales
+data$target1 <- factor(data$target1 , levels = unique_levels)
+
+# Verifica que la columna haya sido convertida a factor con los niveles deseados
+str(data$target1)
+
+
+summary(data)
+
