@@ -10,7 +10,7 @@ data <- read.csv("/home/carlows/Descargas/globalterrorismdb_0718dist.csv")
 selected_data <- data %>% select(individual, nkill, nwound, weaptype1_txt, attacktype1_txt, targtype1_txt, gname, country_txt)
 
 # Definir limites de los valores
-function(x) {
+calculate_bounds <- function(x) {
   Q1 <- quantile(x, 0.25, na.rm = TRUE)
   Q3 <- quantile(x, 0.75, na.rm = TRUE)
   IQR <- Q3 - Q1
