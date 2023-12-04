@@ -4,12 +4,7 @@ data = read.csv(file = "../code/R/proyecto/src/globalterrorismdb_0718dist.csv", 
 manejo <- function(tabla){
   ##### SELECCION DE ATRIBUTOS #####
   
-  seleccion_de_atributos <- data[, c(
-    "eventid", "iyear", "imonth", "iday",
-    "country", "country_txt", "region", "region_txt", "provstate", "city", "latitude", "longitude",
-    "specificity", "vicinity", "attacktype1", "attacktype1_txt", "attacktype2", "attacktype2_txt",
-    "attacktype3", "attacktype3_txt", "extended", "success", "suicide"
-  )]
+  seleccion_de_atributos <- data
   
   ####### VALORES PERDIDOS #######
   
@@ -116,14 +111,8 @@ manejo <- function(tabla){
   moda_attacktype3_txt <- as.numeric(names(sort(table(seleccion_de_atributos2$attacktype3_txt), decreasing = TRUE)[1]))
   seleccion_de_atributos2$attacktype3_txt[seleccion_de_atributos2$attacktype3_txt %in% valores_atipicos_attacktype3_txt] <- moda_attacktype3_txt
   
-    seleccion_de_atributos3 <- seleccion_de_atributos2[, c(
-    "eventid", "iyear", "imonth", "iday",
-    "country", "region", "latitude", "longitude",
-    "specificity", "vicinity", "attacktype1_txt", "attacktype2_txt",
-    "attacktype3_txt", "extended", "success", "suicide"
-  )]
-  return(seleccion_de_atributos3)
+  return(seleccion_de_atributos2)
 }
     
   ### Manipulación 
-seleccion_de_atributos4 <- manejo(data)
+seleccion_de_atributos3 <- manejo(data)
