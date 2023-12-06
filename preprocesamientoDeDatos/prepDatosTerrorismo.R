@@ -7,7 +7,7 @@ library(caret)
 data <- read.csv("/home/carlows/Descargas/globalterrorismdb_0718dist.csv")
 
 # Seleccionar atributos relevantes
-selected_data <- data %>% select(individual, nkill, nwound, weaptype1_txt, attacktype1_txt, targtype1_txt, gname, country_txt)
+selected_data <- data %>% select(individual, nkill, nwound, weaptype1_txt,weapsubtype1_txt)
 
 # Definir limites de los valores
 calculate_bounds <- function(x) {
@@ -46,10 +46,7 @@ impute_mode <- function(x) {
 
 selected_data <- selected_data %>% mutate(
   weaptype1_txt = ifelse(is.na(weaptype1_txt), impute_mode(weaptype1_txt), weaptype1_txt),
-  attacktype1_txt = ifelse(is.na(attacktype1_txt), impute_mode(attacktype1_txt), attacktype1_txt),
-  targtype1_txt = ifelse(is.na(targtype1_txt), impute_mode(targtype1_txt), targtype1_txt),
-  gname = ifelse(is.na(gname), impute_mode(gname), gname),
-  country_txt = ifelse(is.na(country_txt), impute_mode(country_txt), country_txt)
+  weapsubtype1_txt = ifelse(is.na(weapsubtype1_txt), impute_mode(weapsubtype1_txt), weapsubtype1_txt)
 )
 
 # Normalizacion de variables numericas (nkill, nwound)
@@ -71,9 +68,20 @@ data$nkill <- selected_data$nkill
 data$nwound <- selected_data$nwound
 data$individual <- selected_data$individual
 data$weaptype1_txt <- selected_data$weaptype1_txt 
-data$attacktype1_txt <- selected_data$attacktype1_txt
-data$targtype1_txt <- selected_data$ targtype1_txt
-data$gname <- selected_data$gname
-data$country_txt <- selected_data$country_txt
+data$weapsubtype1_txt <- selected_data$weapsubtype1_txt
+
+not_selected_data <- c(
+  "nperps", "nperpcap", "claimed", "claimmode", "claimmode_txt", "claim2", "claimmode2",
+  "claimmode2_txt", "claim3", "claimmode3", "claimmode3_txt", "compclaim", "weaptype1",
+  "weapsubtype1", "weaptype2", "weaptype2_txt", "weapsubtype2", "weapsubtype2_txt", "weaptype3",
+  "weaptype3_txt", "weapsubtype3", "weapsubtype3_txt", "weaptype4", "weaptype4_txt",
+  "weapsubtype4", "weapsubtype4_txt", "weapdetail", "nkillus", "nkillter"
+)
+
+# Las columnas no utilizadas se vuelven NULL
+data <- data %>%
+  mutate(across(all_of(not_selected_data), ~NULL))
+
+#summary(data)
 
 write.csv(data, "archivo.csv", row.names = FALSE)
